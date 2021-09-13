@@ -1,0 +1,86 @@
+--------------------------------------------------------------------------------------
+Timing Analyzer Summary
+--------------------------------------------------------------------------------------
+
+Type           : Worst-case tco
+Slack          : N/A
+Required Time  : None
+Actual Time    : 18.092 ns
+From           : C_STATE.S6
+To             : HEX4[2]
+From Clock     : CLK
+To Clock       : --
+Failed Paths   : 0
+
+Type           : Clock Setup: 'CLK'
+Slack          : N/A
+Required Time  : None
+Actual Time    : 238.55 MHz ( period = 4.192 ns )
+From           : Timer_lsl:U1|\clkc1:countc1[16]
+To             : Timer_lsl:U1|\clkc1:countc1[24]
+From Clock     : CLK
+To Clock       : CLK
+Failed Paths   : 0
+
+Type           : Clock Setup: 'KEY2'
+Slack          : N/A
+Required Time  : None
+Actual Time    : 360.49 MHz ( period = 2.774 ns )
+From           : Timer_lsl:U1|NUM2[1]
+To             : Timer_lsl:U1|NUM2[2]
+From Clock     : KEY2
+To Clock       : KEY2
+Failed Paths   : 0
+
+Type           : Clock Setup: 'KEY1'
+Slack          : N/A
+Required Time  : None
+Actual Time    : 387.00 MHz ( period = 2.584 ns )
+From           : C_STATE.S1
+To             : C_STATE.S2
+From Clock     : KEY1
+To Clock       : KEY1
+Failed Paths   : 0
+
+Type           : Clock Hold: 'KEY1'
+Slack          : Not operational: Clock Skew > Data Delay
+Required Time  : None
+Actual Time    : N/A
+From           : C_STATE.S0
+To             : C_STATE.S1
+From Clock     : KEY1
+To Clock       : KEY1
+Failed Paths   : 7
+
+Type           : Clock Hold: 'KEY2'
+Slack          : Not operational: Clock Skew > Data Delay
+Required Time  : None
+Actual Time    : N/A
+From           : C_STATE.S0
+To             : C_STATE.S1
+From Clock     : KEY2
+To Clock       : KEY2
+Failed Paths   : 6
+
+Type           : Clock Hold: 'CLK'
+Slack          : Not operational: Clock Skew > Data Delay
+Required Time  : None
+Actual Time    : N/A
+From           : C_STATE.S0
+To             : C_STATE.S1
+From Clock     : CLK
+To Clock       : CLK
+Failed Paths   : 5
+
+Type           : Total number of failed paths
+Slack          : 
+Required Time  : 
+Actual Time    : 
+From           : 
+To             : 
+From Clock     : 
+To Clock       : 
+Failed Paths   : 18
+
+--------------------------------------------------------------------------------------
+

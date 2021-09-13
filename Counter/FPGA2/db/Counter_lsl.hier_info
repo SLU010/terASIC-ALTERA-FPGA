@@ -1,0 +1,18 @@
+|Counter_lsl
+CLK => COUT~reg0.CLK
+CLK => Q[0]~reg0.CLK
+CLK => Q[1]~reg0.CLK
+CLK => Q[2]~reg0.CLK
+CLK => Q[3]~reg0.CLK
+EN => COUT~reg0.ENA
+EN => Q[0]~reg0.ENA
+EN => Q[1]~reg0.ENA
+EN => Q[2]~reg0.ENA
+EN => Q[3]~reg0.ENA
+COUT <= COUT~reg0.DB_MAX_OUTPUT_PORT_TYPE
+Q[0] << Q[0]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+Q[1] << Q[1]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+Q[2] << Q[2]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+Q[3] << Q[3]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+

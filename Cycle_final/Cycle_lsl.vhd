@@ -1,0 +1,67 @@
+LIBRARY	IEEE;
+USE	IEEE.STD_LOGIC_1164.ALL;
+ENTITY	Cycle_lsl	IS
+PORT(CLK,RST	:IN STD_LOGIC;
+	KEY1	:in std_logic;
+	KEY2	:in std_logic;
+	HEX0,HEX1,HEX2: OUT STD_LOGIC_VECTOR(0 TO 6);
+	HEX3,HEX4:OUT STD_LOGIC_VECTOR(0 TO 6)
+	);
+END Cycle_lsl;
+ARCHITECTURE bhv OF Cycle_lsl IS
+	TYPE FSM_ST IS(S0,S1,S2,S3,S4,S5,S6);
+	SIGNAL	C_STATE,N_STATE:FSM_ST;
+	SIGNAL 	net:STD_LOGIC;
+	SIGNAL 	net1:STD_LOGIC;
+	SIGNAL 	netc1:STD_LOGIC;
+	SIGNAL 	net2:STD_LOGIC;
+	SIGNAL 	netc2:STD_LOGIC;
+	SIGNAL 	netf:STD_LOGIC;
+	SIGNAL 	number:INTEGER range -2 to 2;
+COMPONENT Timer_lsl
+    port(CLKIN	:in std_logic;
+	K1	:in std_logic;
+	K2	:in std_logic;
+	CLKOUT	:out std_logic;
+	CLKOUT1	:out std_logic;
+	CLKOUT2	:out std_logic;
+	CLKOUTc1	:out std_logic;
+	CLKOUTc2	:out std_logic;
+	N:out INTEGER range -2 to 2
+	);
+END COMPONENT;
+COMPONENT mux21a
+   port(c0,c1,cc1,c2,cc2:in std_logic;
+		s: in integer range -2 to 2;
+		y:out std_logic);
+END COMPONENT;
+BEGIN
+U1: Timer_lsl PORT MAP(CLKIN=>CLK,K1=>KEY1,K2=>KEY2,CLKOUT=>net,CLKOUT1=>net1,CLKOUTc1=>netc1,CLKOUT2=>net2,CLKOUTc2=>netc2,N=>number);
+U2: mux21a port map(c0=>net,c1=>net1,cc1=>netc1,c2=>net2,cc2=>netc2,s=>number,y=>netf);
+REG:PROCESS(RST,netf)
+	BEGIN
+	IF RST = '0' THEN C_STATE <= S0;
+	ELSIF netf = '1' AND netf'EVENT THEN
+	C_STATE <= N_STATE;
+	END IF;
+END PROCESS;
+COM:PROCESS(C_STATE)
+BEGIN
+CASE C_STATE IS
+WHEN S0 => HEX0 <= "1001111";HEX1 <= "1111111";HEX2 <= "1111111";HEX3 <= "1111111";HEX4 <= "1111111";
+	 N_STATE <= S1;
+WHEN S1 => HEX0 <= "0010010";HEX1 <= "1001111";HEX2 <= "1111111";HEX3 <= "1111111";HEX4 <= "1111111";
+	 N_STATE <= S2;
+WHEN S2 => HEX0 <= "0000110";HEX1 <= "0010010";HEX2 <= "1001111";HEX3 <= "1111111";HEX4 <= "1111111";
+	 N_STATE <= S3;
+WHEN S3 => HEX0 <= "1111111";HEX1 <= "0000110";HEX2 <= "0010010";HEX3 <= "1001111";HEX4 <= "1111111";
+	 N_STATE <= S4;
+WHEN S4 => HEX0 <= "1111111";HEX1 <= "1111111";HEX2 <= "0000110";HEX3 <= "0010010";HEX4 <= "1001111";
+	 N_STATE <= S5;
+WHEN S5 => HEX0 <= "1001111";HEX1 <= "1111111";HEX2 <= "1111111";HEX3 <= "0000110";HEX4 <= "0010010";
+	 N_STATE <= S6;
+WHEN S6 => HEX0 <= "0010010";HEX1 <= "1001111";HEX2 <= "1111111";HEX3 <= "1111111";HEX4 <= "0000110";
+	 N_STATE <= S2;
+END CASE;
+END PROCESS;
+END bhv;

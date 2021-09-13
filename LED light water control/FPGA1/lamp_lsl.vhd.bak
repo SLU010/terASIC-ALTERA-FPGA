@@ -1,0 +1,55 @@
+LIBRARY	IEEE;
+USE	IEEE.STD_LOGIC_1164.ALL;
+ENTITY	lamp_lsl	IS
+PORT(CLK,RSTR,RSTG	:IN STD_LOGIC;
+	LED0,LED1,LED2: OUT STD_LOGIC;
+	LED3,LED4,LED5:OUT STD_LOGIC;
+	LEDG0,LEDG1,LEDG2: OUT STD_LOGIC;
+	LEDG3,LEDG4,LEDG5:OUT STD_LOGIC
+	);
+END lamp_lsl;
+ARCHITECTURE bhv OF lamp_lsl IS
+	TYPE FSM_ST IS(S00,S0,S1,S2,S3,S4,S5,R00,G00);
+	SIGNAL	C_STATE,N_STATE:FSM_ST;
+	SIGNAL 	net:STD_LOGIC;
+COMPONENT Timer_lsl
+    port(CLKIN	:in std_logic;   
+		CLKOUT	:out std_logic);
+END COMPONENT;
+BEGIN
+U1: Timer_lsl PORT MAP(CLKIN=>CLK,CLKOUT=>net);
+REG:PROCESS(RSTR,RSTG,net)
+	BEGIN
+	IF RSTR = '0' AND RSTG = '0' THEN C_STATE <= S00;
+	ELSIF RSTR = '1' AND RSTG ='0' THEN C_STATE <= R00;
+	ELSIF RSTR = '0' AND RSTG ='1' THEN C_STATE <= G00;
+	ELSIF net = '1' AND net'EVENT THEN
+	C_STATE <= N_STATE;	
+	END IF;
+END PROCESS;
+COM:PROCESS(C_STATE)
+BEGIN
+CASE C_STATE IS
+WHEN R00 => LED0 <= '0';LED1 <= '1';LED2 <= '1';LED3 <= '1';LED4 <= '1';LED5 <= '1';LEDG0 <= '0';LEDG1 <= '0';LEDG2 <= '0';LEDG3 <= '0';LEDG4 <= '0';LEDG5 <= '0';
+	 N_STATE <= S0;
+WHEN G00 => LED0 <= '0';LED1 <= '0';LED2 <= '0';LED3 <= '0';LED4 <= '0';LED5 <= '0';LEDG0 <= '1';LEDG1 <= '1';LEDG2 <= '1';LEDG3 <= '1';LEDG4 <= '1';LEDG5 <= '1';
+	 N_STATE <= S0;
+WHEN S00 => LED0 <= '0';LED1 <= '0';LED2 <= '0';LED3 <= '0';LED4 <= '0';LED5 <= '0';LEDG0 <= '0';LEDG1 <= '0';LEDG2 <= '0';LEDG3 <= '0';LEDG4 <= '0';LEDG5 <= '0';
+	 N_STATE <= S0;
+WHEN S0 => LED0 <= '1';LED1 <= '0';LED2 <= '0';LED3 <= '0';LED4 <= '0';LED5 <= '0';LEDG0 <= '0';LEDG1 <= '0';LEDG2 <= '0';LEDG3 <= '0';LEDG4 <= '0';LEDG5 <= '1';
+	 N_STATE <= S1;
+WHEN S1 => LED0 <= '0';LED1 <= '1';LED2 <= '0';LED3 <= '0';LED4 <= '0';LED5 <= '0';LEDG0 <= '0';LEDG1 <= '0';LEDG2 <= '0';LEDG3 <= '0';LEDG4 <= '1';LEDG5 <= '0';
+	 N_STATE <= S2;
+WHEN S2 => LED0 <= '0';LED1 <= '0';LED2 <= '1';LED3 <= '0';LED4 <= '0';LED5 <= '0';LEDG0 <= '0';LEDG1 <= '0';LEDG2 <= '0';LEDG3 <= '1';LEDG4 <= '0';LEDG5 <= '0';
+	 N_STATE <= S3;
+WHEN S3 => LED0 <= '0';LED1 <= '0';LED2 <= '0';LED3 <= '1';LED4 <= '0';LED5 <= '0';LEDG0 <= '0';LEDG1 <= '0';LEDG2 <= '1';LEDG3 <= '0';LEDG4 <= '0';LEDG5 <= '0';
+	 N_STATE <= S4;
+WHEN S4 => LED0 <= '0';LED1 <= '0';LED2 <= '0';LED3 <= '0';LED4 <= '1';LED5 <= '0';LEDG0 <= '0';LEDG1 <= '1';LEDG2 <= '0';LEDG3 <= '0';LEDG4 <= '0';LEDG5 <= '0';
+	 N_STATE <= S5;
+WHEN S5 => LED0 <= '0';LED1 <= '0';LED2 <= '0';LED3 <= '0';LED4 <= '0';LED5 <= '1';LEDG0 <= '1';LEDG1 <= '0';LEDG2 <= '0';LEDG3 <= '0';LEDG4 <= '0';LEDG5 <= '0';
+	 N_STATE <= S0;
+	
+END CASE;
+END PROCESS;
+
+END bhv;
